@@ -7,6 +7,7 @@ const ProductList = AsyncHandler(async (req, res) => {
   try {
     const page = req.params.page;
     const categoryId = req.params.categoryId;
+    console.log(categoryId);
     const limit = 10;
     const count = await client
       .query(`select COUNT(*) from product;`)

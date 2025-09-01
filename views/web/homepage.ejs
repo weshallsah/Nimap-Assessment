@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Server-Side Pagination</title>
+    <title>Nimap-assessment</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-50 p-6">
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Products (Server-Side)</h1>
+      <h1 class="text-2xl font-bold">Products-Master page</h1>
       <div class="space-x-2">
         <button
           id="openProductModal"
@@ -193,7 +193,7 @@
 
         // For Filter
         const filterSelect = document.getElementById("filterCategory");
-        filterSelect.innerHTML = '<option value="">All</option>';
+        filterSelect.innerHTML = '<option value="0">All</option>';
         categories.forEach((cat) => {
           const option = document.createElement("option");
           option.value = cat.id;
