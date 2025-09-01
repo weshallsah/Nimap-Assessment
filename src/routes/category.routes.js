@@ -1,14 +1,19 @@
 import { Router } from "express";
-import { CategoryList } from "../controller/category.controller.js";
+import {
+  AddCategory,
+  CategoryList,
+  DeleteCategory,
+  UpdateCategory,
+} from "../controller/category.controller.js";
 
 const routes = Router();
 
-routes.route("/list").get(CategoryList);
+routes.route("/list/:page").get(CategoryList);
 
-// routes.route("/add").put();
+routes.route("/add").put(AddCategory);
 
-// routes.route("/delete").delete();
+routes.route("/delete").delete(DeleteCategory);
 
-// routes.route("/update").post();
+routes.route("/update/:id").post(UpdateCategory);
 
 export default routes;

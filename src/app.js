@@ -18,5 +18,7 @@ app.use("/api/category", categoryroute);
 app.get("/", (req, res) => {
   return res.render("web/homepage");
 });
-
+app.get("/category", (req, res) => {
+  return res.render("web/categorypage");
+});
 export { app };

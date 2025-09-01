@@ -37,13 +37,22 @@ const ProductList = AsyncHandler(async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json(new ApiReponse(500, error, "Something went wrong"));
+      .json(
+        new ApiReponse(500, error, error.message ?? "Something went wrong")
+      );
   }
 });
 
 const AddProduct = AsyncHandler(async (req, res) => {
   try {
     const { name, categoryID, description } = req.body;
+    console.log(`${name},${categoryID},${description}`);
+    if (!name) {
+      throw ApiError(400, "product name is not found");
+    }
+    if (!categoryID) {
+      throw ApiError(400, "product category is not found");
+    }
     await client.query(
       `INSERT INTO Product (name, description, categoryID) VALUES ('${name}', '${description}',${categoryID}) ON CONFLICT (name) DO NOTHING;;`
     );
@@ -54,7 +63,9 @@ const AddProduct = AsyncHandler(async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json(new ApiReponse(500, error, "Something went wrong"));
+      .json(
+        new ApiReponse(500, error, error.message ?? "Something went wrong")
+      );
   }
 });
 
@@ -69,6 +80,7 @@ const DeleteProduct = AsyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiReponse(200, {}, "Product deleted successfully"));
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json(
@@ -99,7 +111,9 @@ const UpdateProduct = AsyncHandler(async (req, res) => {
     console.log(error);
     return res
       .status(500)
-      .json(new ApiReponse(500, error, "Something went wrong"));
+      .json(
+        new ApiReponse(500, error, error.message ?? "Something went wrong")
+      );
   }
 });
 
