@@ -26,9 +26,18 @@ const connectDB = async () => {
     await client.query(createProductquery);
     await client.query("COMMIT");
 
-    await client.query(insertcategory);
-    await client.query(insertproduct);
-    await client.query("COMMIT");
+    const category = (await client.query(`select COUNT(*) from category`))
+      .rows[0]["count"];
+    const product = (await client.query(`select COUNT(*) from product`))
+      .rows[0]["count"];
+    if (category == 0) {
+      await client.query(insertcategory);
+      await client.query("COMMIT");
+    }
+    if (product == 0) {
+      await client.query(insertproduct);
+      await client.query("COMMIT");
+    }
   } catch (error) {
     console.error("Connection error", error);
   }

@@ -14,9 +14,10 @@ const ProductList = AsyncHandler(async (req, res) => {
 
     const data = await client
       .query(
-        `select product.id, product.name,product.created_at,product.description , (category.name) as category from product 
+        `select product.id, product.name,product.created_at,product.description , (category.name) as category ,(category.id) as categoryID from product 
           INNER JOIN category ON Product.categoryID = category.id 
           ${categoryId != 0 ? `where category.id = ${categoryId}` : ""}
+          ORDER BY id asc
           offset ${(page - 1) * limit} limit ${limit};`
       )
       .then((val) => val.rows);
@@ -78,19 +79,28 @@ const DeleteProduct = AsyncHandler(async (req, res) => {
 
 const UpdateProduct = AsyncHandler(async (req, res) => {
   try {
+    const id = req.params.id;
+    const { name, categoryID, description } = req.body;
+    console.log(`${name},${categoryID},${description}`);
+    if (!name) {
+      throw ApiError(400, "product name is not found");
+    }
+    if (!categoryID) {
+      throw ApiError(400, "product category is not found");
+    }
+    await client.query(`UPDATE product
+        SET name = '${name}', description = '${description}', categoryID = '${categoryID}' 
+        WHERE id = ${id};`);
+
     return res
       .status(200)
-      .json(
-        new ApiReponse(
-          200,
-          { List: List, isnext: true },
-          "List fetch success fully"
-        )
-      );
+      .json(new ApiReponse(200, {}, "product data updated succcessfully"));
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
-      .json(new ApiReponse(500, {}, "Something went wrong"));
+      .json(new ApiReponse(500, error, "Something went wrong"));
   }
 });
+
 export { ProductList, AddProduct, DeleteProduct, UpdateProduct };

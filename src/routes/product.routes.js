@@ -14,6 +14,6 @@ routes.route("/add").put(AddProduct);
 
 routes.route("/delete").delete(DeleteProduct);
 
-routes.route("/update").post(UpdateProduct);
+routes.route("/update/:id").post(UpdateProduct);
 
 export default routes;
